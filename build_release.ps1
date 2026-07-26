@@ -26,7 +26,6 @@ param(
     [string]$Tag
 )
 
-$ErrorActionPreference = "Stop"
 $Root = $PSScriptRoot
 Set-Location $Root
 
@@ -40,6 +39,7 @@ Remove-Item -Recurse -Force $Stage, $BuildDir, $DistDir -ErrorAction SilentlyCon
 Write-Host "Exporting a clean snapshot of the committed tree..."
 New-Item -ItemType Directory -Force -Path $Stage | Out-Null
 git archive --format=zip HEAD -o (Join-Path $Stage "src.zip")
+if ($LASTEXITCODE -ne 0) { throw "git archive failed (exit $LASTEXITCODE)" }
 Expand-Archive -Path (Join-Path $Stage "src.zip") -DestinationPath (Join-Path $Stage "src") -Force
 $S = Join-Path $Stage "src"
 
@@ -56,6 +56,7 @@ python -m PyInstaller --onefile --noconsole --name CodeLearningHub `
   --add-data "$S\qt;qt" `
   --add-data "$S\typescript-javascript;typescript-javascript" `
   "$Root\app\server.py" --distpath $DistDir --workpath $BuildDir --specpath $BuildDir
+if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed (exit $LASTEXITCODE)" }
 
 $exe = Join-Path $DistDir "CodeLearningHub.exe"
 if (-not (Test-Path $exe)) {
@@ -66,6 +67,7 @@ Write-Host ("Built {0} ({1:N1} MB)" -f $exe, ((Get-Item $exe).Length / 1MB))
 if ($Tag) {
     Write-Host "Uploading to GitHub Release $Tag ..."
     gh release upload $Tag $exe --clobber
+    if ($LASTEXITCODE -ne 0) { throw "gh release upload failed (exit $LASTEXITCODE)" }
     Write-Host "Done - attached to https://github.com/Gomby711/code-learning-hub/releases/tag/$Tag"
 } else {
     Write-Host "No -Tag given; exe left at $exe"
