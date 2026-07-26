@@ -2,13 +2,13 @@
 .SYNOPSIS
   Builds a fully standalone CodeLearningHub.exe (all course content + static
   assets embedded) and uploads it to a GitHub Release as a plain, one-click
-  download — no zip, no folder for the user to navigate.
+  download - no zip, no folder for the user to navigate.
 
 .DESCRIPTION
   Run this after committing/pushing the version you want to ship. It:
     1. Exports a clean snapshot of the committed tree via `git archive`
        (this automatically excludes node_modules/, __pycache__/, .git/, etc.
-       via .gitignore — nothing extra needs to be listed here).
+       via .gitignore - nothing extra needs to be listed here).
     2. Builds a PyInstaller --onefile exe from app/server.py with every course
        folder and app/static/ embedded as bundled data, so the resulting
        .exe needs zero sibling files to run.
@@ -66,7 +66,7 @@ Write-Host ("Built {0} ({1:N1} MB)" -f $exe, ((Get-Item $exe).Length / 1MB))
 if ($Tag) {
     Write-Host "Uploading to GitHub Release $Tag ..."
     gh release upload $Tag $exe --clobber
-    Write-Host "Done — attached to https://github.com/Gomby711/code-learning-hub/releases/tag/$Tag"
+    Write-Host "Done - attached to https://github.com/Gomby711/code-learning-hub/releases/tag/$Tag"
 } else {
     Write-Host "No -Tag given; exe left at $exe"
     Write-Host "Upload manually with: gh release upload TAG_NAME `"$exe`""
