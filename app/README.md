@@ -4,20 +4,24 @@ A desktop app for the five courses in this repo (Python, JavaScript/TypeScript, 
 Qt/PySide6, and Career & Beyond). Lessons render on the left; a Codecademy-style editor on the
 right runs your code for real and grades your exercise answers with plain-English feedback.
 
+## First-time setup
+
+1. Install the one dependency window mode needs: `pip install -r app/requirements.txt`
+   (just [pywebview](https://pywebview.flowrl.com/) — rendering itself uses Windows' built-in
+   WebView2 runtime, which ships with Windows 10/11 and current Edge installs by default).
+2. Double-click `app/install_shortcut.vbs` once to create a **Code Learning Hub** shortcut on
+   your Desktop.
+
 ## Start it
 
-Double-click **Code Learning Hub** (shortcut on the Desktop or in the repo root).
-It starts the local server and opens the hub in a real standalone desktop window
-(via [pywebview](https://pywebview.flowrl.com/), rendered by Windows' built-in
-WebView2 runtime) — no Chrome, no browser tabs, no address bar. Or run it manually:
+Double-click **Code Learning Hub** on your Desktop. It starts the local server and opens the
+hub in a real standalone desktop window — no Chrome, no browser tabs, no address bar. Or run it
+manually:
 
 ```
 python app/server.py --window   # opens as a native app window
 python app/server.py            # or: runs as a plain local server, open http://127.0.0.1:8899 yourself
 ```
-
-The window mode needs the `pywebview` package (`pip install pywebview`) and the
-WebView2 runtime, which ships with Windows 10/11 and current Edge installs by default.
 
 ## Pin it to the taskbar
 
@@ -83,5 +87,9 @@ Either of these works:
   gotchas, CSS trivia, Python trivia, and DSA pattern recognition
 - **⚡ XP and 🔥 streaks** — 25 XP for a first all-green check per day, 50 XP for completing a day,
   confetti included. Solutions files nudge you to try for 10–15 minutes before peeking
-- Progress lives in the browser's localStorage; lessons are read from disk on every load,
-  so edits to the course folders show up immediately
+- Progress, XP, streaks, and any saved Workshop/Project files live entirely in your own
+  Windows account's local browser storage — every fresh install starts empty, and no one
+  else who runs this app (including other machines) ever sees your data or you theirs.
+  Lessons are read from disk on every load, so edits to the course folders show up immediately
+- **🔄 In-app live updates** — a green "Update available" button appears in the top bar whenever
+  a newer version is published; one click updates and restarts the app automatically
