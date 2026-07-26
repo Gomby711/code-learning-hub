@@ -20,3 +20,9 @@ Thumbs.db
 
 # App runtime
 app/static/*.log
+
+# PyInstaller build output (built fresh per release, not committed)
+app/build/
+app/dist/
+app/*.spec
+app/*.exe
