@@ -68,7 +68,8 @@ if ($Tag) {
     gh release upload $Tag $exe --clobber
     Write-Host "Done — attached to https://github.com/Gomby711/code-learning-hub/releases/tag/$Tag"
 } else {
-    Write-Host "No -Tag given; exe left at $exe (upload manually with: gh release upload <tag> `"$exe`")"
+    Write-Host "No -Tag given; exe left at $exe"
+    Write-Host "Upload manually with: gh release upload TAG_NAME `"$exe`""
 }
 
 Write-Host "Cleaning up staging directory..."
