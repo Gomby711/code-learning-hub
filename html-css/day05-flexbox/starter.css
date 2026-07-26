@@ -1,0 +1,44 @@
+* {
+    box-sizing: border-box;
+}
+
+/* TODO 1: Make .navbar a flex container. Use justify-content so .logo sits at the
+   left edge and .links sits at the right edge, with space between them.
+   Use align-items so both are vertically centered relative to each other. */
+.navbar {
+    background-color: #222;
+    padding: 15px 20px;
+}
+.navbar .logo {
+    color: white;
+    font-size: 20px;
+}
+.navbar .links a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+/* TODO 2: Make .centered-container a flex container with a height of 200px.
+   Use justify-content and align-items so .centered-box ends up dead-center,
+   both horizontally and vertically, inside it. */
+.centered-container {
+    background-color: #eee;
+}
+.centered-box {
+    background-color: steelblue;
+    color: white;
+    padding: 20px;
+}
+
+/* TODO 3: Make .columns a flex container with a gap of 20px between columns.
+   Give each .column a flex-grow of 1 (or use the flex: 1 shorthand) so all
+   three columns share the available width equally, AND end up the same
+   height as each other (the tallest one), with no extra code needed for that. */
+.columns {
+}
+.column {
+    background-color: lightyellow;
+    padding: 15px;
+    border: 1px solid #ccc;
+}

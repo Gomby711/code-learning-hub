@@ -1,0 +1,34 @@
+* {
+    box-sizing: border-box;
+}
+
+/* TODO 1: Set body's font-family to a sans-serif stack (e.g. Arial, Helvetica, sans-serif) */
+body {
+    padding: 20px;
+}
+
+/* TODO 2: Set .body-text's line-height to 1.6 */
+.body-text {
+    font-size: 16px;
+}
+
+/* TODO 3: This button has intentionally BAD contrast (light gray text on white).
+   Use DevTools to check its contrast ratio (click the color swatch next to `color`
+   in the Styles panel). Confirm it FAILS the WCAG AA threshold. Do not fix this one --
+   it's here so you see what a failure looks like. */
+.low-contrast-button {
+    background-color: white;
+    color: #e0e0e0;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+}
+
+/* TODO 4: Fix this one -- set background-color and color so the contrast ratio
+   PASSES WCAG AA (at least 4.5:1). Check your result in DevTools before moving on. */
+.good-contrast-button {
+    padding: 10px 20px;
+    border: none;
+}
+
+/* TODO 5: Give .test-image a meaningful alt attribute in the HTML (not here in CSS --
+   go add alt="..." directly on the <img> tag in starter.html) */

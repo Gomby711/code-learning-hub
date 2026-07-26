@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# Node
+node_modules/
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Windows shortcuts
+*.lnk
+
+# Claude Code local state
+.claude/
+
+# App runtime
+app/static/*.log

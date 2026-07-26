@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact - Riverside Bakery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar__logo">Riverside Bakery</div>
+            <div class="navbar__links">
+                <a class="navbar__link" href="index.html">Home</a>
+                <a class="navbar__link" href="about.html">About</a>
+                <a class="navbar__link" href="contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-content">
+            <h1>Contact Us</h1>
+            <form class="form" action="/submit" method="post">
+                <label class="form__label" for="name">Name</label>
+                <input class="form__input" type="text" id="name" name="name" required minlength="2" placeholder=" ">
+
+                <label class="form__label" for="email">Email</label>
+                <input class="form__input" type="email" id="email" name="email" required placeholder=" ">
+
+                <label class="form__label" for="message">Message</label>
+                <textarea class="form__textarea" id="message" name="message" rows="4" required placeholder=" "></textarea>
+
+                <button class="form__button" type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Riverside Bakery</p>
+    </footer>
+</body>
+</html>

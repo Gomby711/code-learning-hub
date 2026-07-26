@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.card {
+    max-width: 250px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    font-family: Arial, sans-serif;
+}
+
+.card__image {
+    width: 100%;
+}
+
+.card__title {
+    margin-top: 10px;
+}
+
+.card__description {
+    color: #555;
+    margin: 8px 0;
+}
+
+.card__button {
+    padding: 8px 16px;
+    border: none;
+    margin-right: 8px;
+}
+
+.card__button--primary {
+    background-color: steelblue;
+    color: white;
+}
+
+.card__button--secondary {
+    background-color: #eee;
+    color: #333;
+}

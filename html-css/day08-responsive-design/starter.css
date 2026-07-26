@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+}
+
+/* TODO 2 (mobile-first): make .container a flex container with
+   flex-direction: column as the DEFAULT (unwrapped) rule -- assume a phone screen first. */
+.container {
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.box {
+    background-color: steelblue;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* TODO 3: Add a media query with (min-width: 768px) that switches
+   .container to flex-direction: row, for wider screens. */
+
+
+/* TODO 4: Set .responsive-heading to font-size: 1.5rem by default (phone-sized). */
+.responsive-heading {
+}
+
+/* TODO 5: Add a media query with (min-width: 768px) that increases
+   .responsive-heading's font-size to 3rem on wider screens. */
+

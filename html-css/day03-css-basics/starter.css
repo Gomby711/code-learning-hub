@@ -1,0 +1,24 @@
+/* TODO 1: Add a universal box-sizing: border-box rule using the * selector.
+   Do this FIRST, before anything else. */
+
+/* TODO 2: Write a rule for the element selector h1 setting color to black */
+
+/* TODO 3: Write a rule for the class selector .highlight setting color to blue */
+
+/* TODO 4: Write a rule for the id selector #main-title setting color to green */
+/* Reload the page after all three above -- which color actually shows? Which one WINS,
+   and why, based on specificity (not the order you wrote them in)? */
+
+/* TODO 5: Write a rule for the element selector p setting color to black */
+
+/* TODO 6: Write a rule for the class selector .warning setting color to red */
+/* Which one wins now, and why is this comparison different from the h1 case above? */
+
+/* TODO 7: Style .box with:
+   - width: 200px
+   - padding: 20px
+   - border: 2px solid black
+   - margin: 20px
+   Then open DevTools, click the .box element, and find the "Box Model" diagram in the
+   Styles/Computed panel -- confirm the numbers you see match what you'd expect given
+   your box-sizing: border-box rule from TODO 1. */

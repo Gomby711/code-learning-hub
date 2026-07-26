@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* TODO: Once you've renamed the classes in starter.html to BEM naming,
+   update these selectors to match: .card, .card__image, .card__title,
+   .card__description, .card__button, .card__button--primary,
+   .card__button--secondary */
+
+.box {
+    max-width: 250px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    font-family: Arial, sans-serif;
+}
+
+.pic {
+    width: 100%;
+}
+
+.heading {
+    margin-top: 10px;
+}
+
+.desc {
+    color: #555;
+    margin: 8px 0;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    margin-right: 8px;
+}
+
+.btn-main {
+    background-color: steelblue;
+    color: white;
+}
+
+.btn-alt {
+    background-color: #eee;
+    color: #333;
+}

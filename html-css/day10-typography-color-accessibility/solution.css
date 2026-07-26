@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 20px;
+}
+
+.body-text {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.low-contrast-button {
+    background-color: white;
+    color: #e0e0e0;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+}
+
+.good-contrast-button {
+    background-color: #1a3d7c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+}

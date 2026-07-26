@@ -1,0 +1,57 @@
+* {
+    box-sizing: border-box;
+}
+
+/* TODO 1: Make list items ALTERNATE background colors using :nth-child(odd/even) */
+.list li {
+    padding: 8px;
+    list-style: none;
+}
+
+/* TODO 2: Add a :hover rule for .link that changes its color */
+.link {
+    color: steelblue;
+}
+
+/* TODO 3: Add a :focus rule for input that changes border-color to something noticeable */
+input {
+    padding: 8px;
+    border: 2px solid #ccc;
+}
+
+/* TODO 4: Use ::before and ::after to add opening/closing curly quotes (\201C and \201D)
+   around .quote's content */
+.quote {
+    font-style: italic;
+}
+
+/* TODO 5: Add a transition on background-color (0.3s ease), then add a :hover
+   rule that changes background-color to a darker shade */
+.animated-button {
+    background-color: steelblue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    font-size: 16px;
+}
+
+/* TODO 6: Define a @keyframes named "bounce" that moves translateY from 0 to -20px
+   and back to 0, then apply it to .bouncing-ball with a 1s duration, ease-in-out,
+   repeating infinitely */
+.bouncing-ball {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: tomato;
+}
+
+/* TODO 7: Define --primary-color and --spacing-unit on :root, then use var()
+   to apply them to .themed-button's background-color and padding */
+:root {
+}
+
+.themed-button {
+    color: white;
+    border: none;
+    font-size: 16px;
+}

@@ -1,0 +1,41 @@
+* {
+    box-sizing: border-box;
+}
+
+/* TODO 1: Style input[type="text"] and input[type="email"] with:
+   font-family: inherit, padding: 8px 12px, border: 1px solid #ccc, border-radius: 4px */
+input[type="text"], input[type="email"] {
+}
+
+/* TODO 2: Add a rule using :not(:placeholder-shown):invalid to show a red border
+   ONLY once a visitor has typed something invalid (not on page load) */
+
+
+/* TODO 3: Add a rule using :not(:placeholder-shown):valid to show a green border
+   once a visitor has typed something that passes validation */
+
+
+/* --- Part 2: find and fix the bug below --- */
+
+.broken-layout {
+    display: flex;
+    gap: 15px;
+}
+
+#special-box-override {
+    display: block !important;
+}
+
+.broken-box {
+    flex: 1;
+    background-color: lightyellow;
+    padding: 15px;
+    border: 1px solid #ccc;
+}
+
+/* TODO 4: There's a rule ABOVE this comment, targeting an id that doesn't even exist
+   in the HTML right now, using !important. It's a red herring for the debugging
+   practice, but it demonstrates exactly why !important is dangerous: it would
+   override .broken-layout's display:flex for ANY element that happened to have
+   id="special-box-override", regardless of specificity. Delete the #special-box-override
+   rule entirely -- it should never have used !important, and nothing needs it. */

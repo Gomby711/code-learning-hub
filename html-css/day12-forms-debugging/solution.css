@@ -1,0 +1,30 @@
+* {
+    box-sizing: border-box;
+}
+
+input[type="text"], input[type="email"] {
+    font-family: inherit;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input:not(:placeholder-shown):invalid {
+    border-color: red;
+}
+
+input:not(:placeholder-shown):valid {
+    border-color: green;
+}
+
+.broken-layout {
+    display: flex;
+    gap: 15px;
+}
+
+.broken-box {
+    flex: 1;
+    background-color: lightyellow;
+    padding: 15px;
+    border: 1px solid #ccc;
+}

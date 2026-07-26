@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ana Rivera - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="logo">Ana Rivera</div>
+        <nav>
+            <a href="#projects">Projects</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div>
+                <h1>Hi, I'm Ana.</h1>
+                <p>I build clean, accessible websites.</p>
+                <a href="#contact" class="cta-button">Get in touch</a>
+            </div>
+        </section>
+
+        <section id="projects" class="projects">
+            <h2>Projects</h2>
+            <div class="project-grid">
+                <article class="project-card">
+                    <h3>Weather App</h3>
+                    <p>A simple app showing live weather using a public API.</p>
+                </article>
+                <article class="project-card">
+                    <h3>Recipe Finder</h3>
+                    <p>Search thousands of recipes by ingredient.</p>
+                </article>
+                <article class="project-card">
+                    <h3>Budget Tracker</h3>
+                    <p>Track monthly expenses across categories.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <h2>About Me</h2>
+            <p>I'm a self-taught web developer with a background in graphic design.
+            I enjoy building interfaces that are both good-looking and easy to use for everyone,
+            including people relying on screen readers or keyboard-only navigation.</p>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2>Contact</h2>
+            <form action="/submit" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4"></textarea>
+
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Ana Rivera</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,30 @@
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+    color: black;
+}
+
+.highlight {
+    color: blue;
+}
+
+#main-title {
+    color: green;   /* wins: ID beats class beats element */
+}
+
+p {
+    color: black;
+}
+
+.warning {
+    color: red;   /* wins: class beats plain element selector */
+}
+
+.box {
+    width: 200px;
+    padding: 20px;
+    border: 2px solid black;
+    margin: 20px;
+}

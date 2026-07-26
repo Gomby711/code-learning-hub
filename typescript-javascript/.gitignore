@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.log
+.env
+coverage/
+day07-mini-project/tasks.json
+day14-capstone/solution/expenses.json

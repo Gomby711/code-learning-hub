@@ -1,0 +1,37 @@
+* {
+    box-sizing: border-box;
+}
+
+.inline-test {
+    width: 150px;
+    background-color: lightblue;
+}
+
+.block-test {
+    width: 150px;
+    background-color: lightgreen;
+}
+
+.card {
+    width: 300px;
+    padding: 20px;
+    background-color: lightgray;
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    padding: 4px 8px;
+}
+
+.first {
+    margin-bottom: 30px;
+}
+
+.second {
+    margin-top: 20px;
+}

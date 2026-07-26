@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code Learning Hub</title>
+<link rel="icon" type="image/png" sizes="256x256" href="icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header id="topbar">
+  <button id="brand" title="Go home">
+    <img id="brand-icon" src="icon.png" alt="">
+    <span id="brand-name">code<b>learning</b>hub</span>
+  </button>
+  <nav id="tabs"></nav>
+  <div id="stats">
+    <button id="update-btn" class="update-btn" hidden title="An update is ready to install">
+      <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M12 20l-4-4M12 20l4-4M5 5h14"/></svg>
+      <span id="update-btn-label">Update available</span></button>
+    <span id="streak-badge" title="Days in a row you've shown up">
+      <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s5 5.5 5 10a5 5 0 0 1-10 0c0-1.5.8-2.7 1.5-3.5.2 1 .8 1.5 1.5 1.5 1 0 1-1 1-2 0-2 1-4 2-6z"/></svg>
+      <b id="streak-num">0</b></span>
+    <b id="xp-num" hidden>0</b>
+  </div>
+</header>
+
+<div id="confirm-modal" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <h3 id="confirm-modal-title">Are you sure?</h3>
+    <p id="confirm-modal-msg"></p>
+    <div class="modal-actions">
+      <button id="confirm-modal-cancel" class="btn-ghost">Cancel</button>
+      <button id="confirm-modal-ok" class="btn-danger">Delete forever</button>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+  <!-- Home view -->
+  <section id="view-home" class="view">
+    <div class="home-inner">
+      <div id="hero">
+        <div id="hero-text">
+          <h1>Learn to code,<br><span class="hl">one day at a time.</span></h1>
+          <p class="home-sub">Five in-depth tracks that take you from total beginner to job-ready.
+          Read the lesson, type real code, and get instant feedback — right here.</p>
+          <button id="cta-start" class="btn-yellow big">Start learning →</button>
+        </div>
+        <div id="hero-term">
+          <div class="term-bar"><i></i><i></i><i></i><span>terminal</span></div>
+          <pre id="term-body"></pre>
+        </div>
+      </div>
+
+      <div id="welcome-callout" hidden>
+        <span><strong>First time here?</strong> Start with <em>Python → Day 0</em> — it assumes you know absolutely nothing and builds from there.</span>
+        <button id="welcome-go" class="btn-yellow">Take me there</button>
+        <button id="welcome-close" class="btn-ghost" title="Dismiss">✕</button>
+      </div>
+
+      <h2 class="section-label">// your courses</h2>
+      <div id="course-cards"></div>
+
+      <h2 class="section-label">// this week</h2>
+      <div id="week-tracker"></div>
+
+      <h2 class="section-label">// how it works</h2>
+      <div class="home-howto">
+        <div class="how-step"><span class="how-num">1</span><h3>Read</h3><p>Open a day in a course tab. The lesson explains everything in plain English.</p></div>
+        <div class="how-step"><span class="how-num">2</span><h3>Try</h3><p>Hit <b>▶ Try it</b> on any example, or open the day's <code>exercises</code> file and fill in the TODOs.</p></div>
+        <div class="how-step"><span class="how-num">3</span><h3>Check</h3><p>Press <b>✓ Check answer</b> — see exactly which parts pass, and <em>why</em> the rest don't.</p></div>
+        <div class="how-step"><span class="how-num">4</span><h3>Level up</h3><p>Earn XP, keep your streak alive, and mark days complete as you go.</p></div>
+      </div>
+
+      <div class="home-footer">
+        <p class="home-footer-note">Your XP, streak, and completed lessons are saved only on this computer, under
+          your own Windows account — nobody else who runs this app sees your progress, and you don't see theirs.</p>
+        <button id="btn-reset-progress" class="btn-ghost">Reset my progress</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Course view -->
+  <section id="view-course" class="view" hidden>
+    <aside id="sidebar">
+      <div id="sidebar-head"></div>
+      <ul id="day-list"></ul>
+    </aside>
+    <button id="sidebar-toggle" title="Collapse/expand lesson list">‹</button>
+    <div id="content-split">
+      <div id="lesson-pane">
+        <div id="lesson-toolbar"></div>
+        <article id="lesson-body"></article>
+      </div>
+      <div id="split-handle" title="Drag to resize"></div>
+      <div id="editor-pane">
+        <div id="editor-toolbar">
+          <select id="run-lang" title="Language to run">
+            <option value="python">Python</option>
+            <option value="js">JavaScript</option>
+            <option value="ts">TypeScript</option>
+            <option value="html">HTML / CSS</option>
+          </select>
+          <button id="btn-run" title="Ctrl+Enter">▶ Run</button>
+          <button id="btn-check" class="btn-yellow" title="Run your code and grade it">✓ Check answer</button>
+          <button id="btn-clear-editor" class="btn-ghost">Clear</button>
+          <label class="ws-checkbox" id="inspector-toggle-wrap" title="Hover the preview to see content/padding/border/margin sizes">
+            <input type="checkbox" id="inspector-toggle"> Inspector</label>
+          <span id="editor-file-label"></span>
+        </div>
+        <div id="editor-wrap">
+          <div id="gutter"></div>
+          <div id="editor-stack">
+            <pre id="highlight" aria-hidden="true"><code id="highlight-code"></code></pre>
+            <textarea id="editor" spellcheck="false" autocomplete="off" autocapitalize="off"
+              placeholder="// Type code here, load an exercises file, or press ▶ Try it on any example in the lesson…"></textarea>
+          </div>
+        </div>
+        <details id="stdin-details">
+          <summary>Program input (stdin) — for code that uses <code>input()</code> / prompts</summary>
+          <textarea id="stdin-box" spellcheck="false" placeholder="One line per input() call"></textarea>
+        </details>
+        <div id="output-wrap">
+          <div id="output-head">
+            <span id="output-title">Output</span>
+            <div id="course-width-btns" class="pw-width-btns" hidden>
+              <button class="pw-width-btn active" data-w="0" title="Full width">Full</button>
+              <button class="pw-width-btn" data-w="768" title="Tablet (768px)">Tablet</button>
+              <button class="pw-width-btn" data-w="375" title="Mobile (375px)">Mobile</button>
+            </div>
+            <button id="btn-clear-output" class="btn-ghost">Clear</button>
+          </div>
+          <div id="feedback" hidden></div>
+          <pre id="output"></pre>
+          <div id="preview-wrap" hidden><iframe id="preview" sandbox="allow-scripts"></iframe></div>
+          <div id="compare" hidden>
+            <div class="cmp-col"><div class="cmp-label you">YOURS</div><iframe id="cmp-you" sandbox="allow-scripts"></iframe></div>
+            <div class="cmp-col"><div class="cmp-label goal">GOAL</div><iframe id="cmp-goal" sandbox="allow-scripts"></iframe></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workshop view -->
+  <section id="view-workshop" class="view" hidden>
+    <aside id="workshop-guide">
+      <h2>Workshop</h2>
+      <p class="ws-sub">A blank slate to build your own projects, in any language. Nothing here is graded against
+        a fixed answer — hit <b>Review my code</b> any time and the app will run it for real, explain any
+        crash in plain English with the exact line, and (once it runs clean) point out common per-language
+        pitfalls worth double-checking. Your code is saved per-language automatically.</p>
+      <h3>Quick tips for the selected language</h3>
+      <div id="ws-tips" class="ws-tips"></div>
+      <h3>Project notes / TODO scratchpad</h3>
+      <textarea id="ws-project-notes" placeholder="What are you building? What's left to do?"></textarea>
+      <h3>My saved files</h3>
+      <p class="ws-tool-desc">The editor above always autosaves your latest draft per language. Save a copy under
+        a name here to keep multiple snippets/projects side by side and reload them any time.</p>
+      <div class="save-row">
+        <input id="ws-save-name" class="ws-tool-input" placeholder="Name this snippet…">
+        <button id="ws-btn-save-as" class="btn-yellow">💾 Save</button>
+      </div>
+      <div id="ws-saves-list" class="saves-list"></div>
+      <h3>Review results</h3>
+      <div id="ws-review-panel"><div class="ws-lint info">Write some code, then click <b>Review my code</b>.</div></div>
+
+      <h3>Reference tools</h3>
+      <details class="ws-tool">
+        <summary>Box Model Inspector (HTML/CSS)</summary>
+        <p class="ws-tool-desc">Hover any element in the preview to see its content/padding/border/margin sizes, live.</p>
+        <label class="ws-checkbox"><input type="checkbox" id="ws-inspector-toggle"> Enable on next Run/Review (HTML language)</label>
+      </details>
+      <details class="ws-tool">
+        <summary>Regex Tester</summary>
+        <input id="ws-regex-pattern" class="ws-tool-input" placeholder="pattern, e.g. \d+" spellcheck="false">
+        <textarea id="ws-regex-text" class="ws-tool-input" rows="3" placeholder="test string(s)..."></textarea>
+        <div id="ws-regex-result" class="ws-tool-desc"></div>
+      </details>
+      <details class="ws-tool">
+        <summary>Big-O Cheatsheet</summary>
+        <table class="ws-bigo">
+          <tr><td><code>O(1)</code></td><td>constant — hash map lookup</td></tr>
+          <tr><td><code>O(log n)</code></td><td>logarithmic — binary search</td></tr>
+          <tr><td><code>O(n)</code></td><td>linear — one loop over the input</td></tr>
+          <tr><td><code>O(n log n)</code></td><td>linearithmic — efficient sorting</td></tr>
+          <tr><td><code>O(n²)</code></td><td>quadratic — nested loop over the input</td></tr>
+        </table>
+      </details>
+    </aside>
+    <div class="editor-pane">
+      <div class="editor-toolbar">
+        <select id="ws-lang" class="run-lang" title="Language">
+          <option value="python">Python</option>
+          <option value="js">JavaScript</option>
+          <option value="ts">TypeScript</option>
+          <option value="html">HTML / CSS</option>
+        </select>
+        <button id="ws-btn-run" class="btn-run" title="Ctrl+Enter">▶ Run</button>
+        <button id="ws-btn-review" class="btn-yellow" title="Run it and get plain-English feedback">Review my code</button>
+        <button id="ws-btn-clear" class="btn-ghost">Clear</button>
+      </div>
+      <div class="editor-wrap">
+        <div id="ws-gutter" class="gutter"></div>
+        <div class="editor-stack">
+          <pre class="highlight-pre" aria-hidden="true"><code id="ws-highlight-code"></code></pre>
+          <textarea id="ws-editor" class="editor-ta" spellcheck="false" autocomplete="off" autocapitalize="off"
+            placeholder="// Build anything here. Toggle the language above."></textarea>
+        </div>
+      </div>
+      <details class="stdin-details">
+        <summary>Program input (stdin) — for code that uses <code>input()</code> / prompts</summary>
+        <textarea id="ws-stdin-box" class="stdin-box" spellcheck="false" placeholder="One line per input() call"></textarea>
+      </details>
+      <div class="output-wrap">
+        <div class="output-head"><span>Output</span></div>
+        <pre id="ws-output" class="output-pre"></pre>
+        <iframe id="ws-preview" sandbox="allow-scripts" hidden></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Workspace view -->
+  <section id="view-project" class="view" hidden>
+    <aside id="project-guide">
+      <h2>Project Workspace</h2>
+      <p class="ws-sub">Real multi-file frontend work — an <code>index.html</code>, a <code>style.css</code>,
+        and a <code>script.js</code>, combined live into one real page with a real DOM. This is the closest
+        thing in the app to what building an actual website or web app day-to-day looks like: your JS can
+        query and change the page, listen for clicks, and update the screen — not just print to a console.</p>
+      <h3>Ideas to build here</h3>
+      <div class="ws-tips">
+        <div class="ws-tip">A counter with +1/-1 buttons and a reset — the classic first real DOM interactivity exercise.</div>
+        <div class="ws-tip">A to-do list: add an item, check it off, delete it — combines forms, events, and DOM updates.</div>
+        <div class="ws-tip">A form with live validation feedback as the user types (no submit needed to see errors).</div>
+        <div class="ws-tip">Your Day 4 (Career track) portfolio project idea, prototyped here before a real repo.</div>
+      </div>
+      <h3>Preview width</h3>
+      <div class="pw-width-btns">
+        <button class="pw-width-btn active" data-w="0">Full</button>
+        <button class="pw-width-btn" data-w="768">Tablet</button>
+        <button class="pw-width-btn" data-w="375">Mobile</button>
+      </div>
+      <label class="ws-checkbox" style="margin-top:10px"><input type="checkbox" id="pw-inspector-toggle"> Box Model Inspector</label>
+      <h3>Saved</h3>
+      <p class="ws-tool-desc">All three files autosave to this browser as you type. Save a named copy to keep
+        multiple separate projects and reload any of them later.</p>
+      <div class="save-row">
+        <input id="pw-save-name" class="ws-tool-input" placeholder="Name this project…">
+        <button id="pw-btn-save-as" class="btn-yellow">💾 Save as new</button>
+      </div>
+      <div id="pw-saves-list" class="saves-list"></div>
+    </aside>
+    <div id="project-editors">
+      <div class="proj-file">
+        <div class="proj-file-label">index.html</div>
+        <div class="editor-wrap editor-wrap-sm">
+          <div id="pw-html-gutter" class="gutter"></div>
+          <div class="editor-stack">
+            <pre class="highlight-pre" aria-hidden="true"><code id="pw-html-highlight"></code></pre>
+            <textarea id="pw-html-editor" class="editor-ta" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="proj-file">
+        <div class="proj-file-label">style.css</div>
+        <div class="editor-wrap editor-wrap-sm">
+          <div id="pw-css-gutter" class="gutter"></div>
+          <div class="editor-stack">
+            <pre class="highlight-pre" aria-hidden="true"><code id="pw-css-highlight"></code></pre>
+            <textarea id="pw-css-editor" class="editor-ta" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="proj-file">
+        <div class="proj-file-label">script.js</div>
+        <div class="editor-wrap editor-wrap-sm">
+          <div id="pw-js-gutter" class="gutter"></div>
+          <div class="editor-stack">
+            <pre class="highlight-pre" aria-hidden="true"><code id="pw-js-highlight"></code></pre>
+            <textarea id="pw-js-editor" class="editor-ta" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="project-preview-pane">
+      <div class="output-head"><span>Live Preview</span><button id="pw-btn-clear" class="btn-ghost">Clear all</button></div>
+      <div id="pw-preview-frame-wrap">
+        <iframe id="pw-preview" sandbox="allow-scripts"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Flashcards view -->
+  <section id="view-flashcards" class="view practice-view" hidden>
+    <div class="practice-scroll">
+      <div class="fc-wrap">
+        <h2>Interview Flashcards</h2>
+        <p class="ws-sub">Quick-fire drilling for the fluency interviewers actually probe for, per track.
+          Answer honestly before flipping; cards you get right show up less often, cards you miss come back sooner.</p>
+        <div class="fc-controls">
+          <span id="fc-progress" class="fc-progress"></span>
+        </div>
+        <div id="fc-card" class="fc-card">
+          <div id="fc-question" class="fc-question"></div>
+          <div id="fc-answer" class="fc-answer" hidden></div>
+          <button id="fc-btn-flip" class="btn-yellow">Show answer</button>
+          <div id="fc-grade-btns" class="fc-grade-btns" hidden>
+            <button id="fc-btn-wrong" class="fc-btn-wrong">✗ Missed it</button>
+            <button id="fc-btn-right" class="fc-btn-right">✓ Got it</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="side-toggle">
+      <div class="side-toggle-label">Track</div>
+      <div id="fc-track-list"></div>
+    </aside>
+  </section>
+
+  <!-- Quizzes view -->
+  <section id="view-quizzes" class="view practice-view" hidden>
+    <div class="practice-scroll">
+      <div class="fc-wrap" id="quiz-body"></div>
+    </div>
+    <aside class="side-toggle">
+      <div class="side-toggle-label">Track</div>
+      <div id="quiz-track-list"></div>
+    </aside>
+  </section>
+</main>
+
+<canvas id="confetti"></canvas>
+<div id="toast" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>

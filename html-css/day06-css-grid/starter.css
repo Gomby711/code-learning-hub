@@ -1,0 +1,35 @@
+* {
+    box-sizing: border-box;
+}
+
+/* TODO 1: Make .gallery a grid container with 3 equal columns (use repeat())
+   and a gap of 15px. */
+.gallery {
+}
+
+.gallery .item {
+    background-color: lightsteelblue;
+    padding: 30px 10px;
+    text-align: center;
+}
+
+/* TODO 2: Make .featured span the first TWO columns using grid-column. */
+.featured {
+    background-color: steelblue;
+    color: white;
+}
+
+/* TODO 3: Make .page a grid container using grid-template-areas to build:
+   a header spanning the full width on top,
+   a 200px sidebar and a flexible main area in the middle row,
+   a footer spanning the full width on the bottom.
+   Then give .header, .sidebar, .main, .footer each the matching grid-area. */
+.page {
+    gap: 10px;
+    min-height: 300px;
+}
+.header, .sidebar, .main, .footer {
+    background-color: lightyellow;
+    padding: 15px;
+    border: 1px solid #ccc;
+}

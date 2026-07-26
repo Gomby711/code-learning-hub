@@ -1,0 +1,44 @@
+* {
+    box-sizing: border-box;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #222;
+    padding: 15px 20px;
+}
+.navbar .logo {
+    color: white;
+    font-size: 20px;
+}
+.navbar .links a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    background-color: #eee;
+}
+.centered-box {
+    background-color: steelblue;
+    color: white;
+    padding: 20px;
+}
+
+.columns {
+    display: flex;
+    gap: 20px;
+}
+.column {
+    flex: 1;
+    background-color: lightyellow;
+    padding: 15px;
+    border: 1px solid #ccc;
+}

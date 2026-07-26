@@ -1,0 +1,37 @@
+* {
+    box-sizing: border-box;
+}
+
+/* TODO 1: Give .inline-test a width of 150px and a background-color of lightblue.
+   Reload and confirm the width is IGNORED -- both spans should stay their natural
+   content size, sitting side by side, because they are inline by default. */
+.inline-test {
+}
+
+/* TODO 2: Give .block-test a width of 150px and a background-color of lightgreen.
+   Reload and confirm each div DOES respect the width, and each one starts on
+   its own new line, because divs are block by default. */
+.block-test {
+}
+
+/* TODO 3: Give .card a width of 300px, padding of 20px, a light gray background,
+   and position: relative (required so the badge below positions relative to
+   THIS card, not the whole page). */
+.card {
+}
+
+/* TODO 4: Give .badge position: absolute, top: 5px, right: 5px, a red background,
+   white text color, and some small padding (try 4px 8px). Reload and confirm it
+   pins to the card's top-right corner, not the page's. */
+.badge {
+}
+
+/* TODO 5: Give .first a margin-bottom of 30px and .second a margin-top of 20px.
+   Reload, then use DevTools to measure the actual visible gap between the two
+   boxes (click one, look at the box model diagram, or just visually estimate).
+   Confirm it's 30px, NOT 50px -- that's margin collapsing. */
+.first {
+}
+
+.second {
+}
