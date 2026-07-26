@@ -22,10 +22,16 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 FROZEN = getattr(sys, "frozen", False)
-# When packaged by PyInstaller, __file__ points inside a temp bundle — the exe
-# itself lives next to static/, run_ts.js, and the course folders instead.
-APP_DIR = Path(sys.executable).resolve().parent if FROZEN else Path(__file__).resolve().parent
-ROOT = APP_DIR.parent          # D:\Git\learning-code
+if FROZEN:
+    # PyInstaller onefile builds unpack their embedded --add-data files into a
+    # real temp directory (sys._MEIPASS) at every launch. The build mirrors
+    # this repo's own layout inside that bundle (course folders + app/), so
+    # everything below resolves exactly like the unfrozen, on-disk case.
+    ROOT = Path(sys._MEIPASS)          # type: ignore[attr-defined]
+    APP_DIR = ROOT / "app"
+else:
+    APP_DIR = Path(__file__).resolve().parent
+    ROOT = APP_DIR.parent               # D:\Git\learning-code
 STATIC = APP_DIR / "static"
 PORT = 8899
 
@@ -82,8 +88,13 @@ def restart_app():
         kwargs["creationflags"] = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
     # Frozen (PyInstaller) builds re-invoke the exe itself; a plain script
     # re-invokes the same interpreter against server.py.
-    cmd = [sys.executable, "--window"] if FROZEN else [sys.executable, str(APP_DIR / "server.py"), "--window"]
-    subprocess.Popen(cmd, cwd=str(APP_DIR), close_fds=True, **kwargs)
+    if FROZEN:
+        cmd = [sys.executable, "--window"]
+        cwd = str(Path(sys.executable).resolve().parent)
+    else:
+        cmd = [sys.executable, str(APP_DIR / "server.py"), "--window"]
+        cwd = str(APP_DIR)
+    subprocess.Popen(cmd, cwd=cwd, close_fds=True, **kwargs)
     os._exit(0)
 
 COURSES = [
