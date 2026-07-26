@@ -9,6 +9,7 @@ Run:  python server.py          (then open http://127.0.0.1:8899)
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -20,7 +21,10 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-APP_DIR = Path(__file__).resolve().parent
+FROZEN = getattr(sys, "frozen", False)
+# When packaged by PyInstaller, __file__ points inside a temp bundle — the exe
+# itself lives next to static/, run_ts.js, and the course folders instead.
+APP_DIR = Path(sys.executable).resolve().parent if FROZEN else Path(__file__).resolve().parent
 ROOT = APP_DIR.parent          # D:\Git\learning-code
 STATIC = APP_DIR / "static"
 PORT = 8899
@@ -76,8 +80,10 @@ def restart_app():
     kwargs = {}
     if sys.platform == "win32":
         kwargs["creationflags"] = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
-    subprocess.Popen([sys.executable, str(APP_DIR / "server.py"), "--window"],
-                      cwd=str(APP_DIR), close_fds=True, **kwargs)
+    # Frozen (PyInstaller) builds re-invoke the exe itself; a plain script
+    # re-invokes the same interpreter against server.py.
+    cmd = [sys.executable, "--window"] if FROZEN else [sys.executable, str(APP_DIR / "server.py"), "--window"]
+    subprocess.Popen(cmd, cwd=str(APP_DIR), close_fds=True, **kwargs)
     os._exit(0)
 
 COURSES = [
@@ -168,13 +174,27 @@ def safe_resolve(rel_path: str) -> Path | None:
     return p
 
 
+def python_executable():
+    """A real Python interpreter to shell out to. sys.executable IS that
+    interpreter when running as a plain script, but points at our own exe
+    (not a Python interpreter at all) once packaged by PyInstaller — so a
+    frozen build must instead find a system Python on PATH."""
+    if not FROZEN:
+        return sys.executable
+    return shutil.which("python") or shutil.which("python3") or shutil.which("py")
+
+
 def run_code(lang: str, code: str, stdin_text: str) -> dict:
     tmpdir = Path(tempfile.mkdtemp(prefix="hub_run_"))
     try:
         if lang == "python":
+            py = python_executable()
+            if not py:
+                return {"error": "Python isn't installed on this machine (needed to run/check "
+                                  "Python exercises) — install it from python.org, then try again."}
             src = tmpdir / "main.py"
             src.write_text(code, encoding="utf-8")
-            cmd = [sys.executable, "-X", "utf8", str(src)]
+            cmd = [py, "-X", "utf8", str(src)]
         elif lang == "js":
             src = tmpdir / "main.js"
             src.write_text(code, encoding="utf-8")
@@ -288,7 +308,9 @@ def main():
     server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
     url = f"http://127.0.0.1:{PORT}"
 
-    if "--window" in sys.argv:
+    # A double-clicked .exe gets no CLI flags, but should still behave like
+    # the desktop app rather than a silent background server.
+    if "--window" in sys.argv or FROZEN:
         # Standalone desktop window (native WebView2), no browser involved.
         if sys.platform == "win32":
             # Without an explicit AppUserModelID, Windows resolves this
