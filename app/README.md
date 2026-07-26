@@ -4,7 +4,19 @@ A desktop app for the five courses in this repo (Python, JavaScript/TypeScript, 
 Qt/PySide6, and Career & Beyond). Lessons render on the left; a Codecademy-style editor on the
 right runs your code for real and grades your exercise answers with plain-English feedback.
 
-## First-time setup
+## Easiest way to get it (no coding experience needed)
+
+Download **`CodeLearningHub.exe`** from the
+[latest release](https://github.com/Gomby711/code-learning-hub/releases/latest) and double-click
+it. That's it — everything (all five courses, the app itself) is bundled inside that one file.
+No Python install, no zip file, no folder to dig through.
+
+The only thing not bundled is the ability to actually *run/check* Python and JavaScript/TypeScript
+exercises — that needs a real Python (and, for the JS/TS track, Node.js) installed on your
+machine, since the app runs your code for real rather than faking it. Reading lessons, browsing
+courses, flashcards, and quizzes all work with zero extra installs.
+
+## Running from source instead (for contributors)
 
 1. Install the one dependency window mode needs: `pip install -r app/requirements.txt`
    (just [pywebview](https://pywebview.flowrl.com/) — rendering itself uses Windows' built-in
@@ -12,11 +24,7 @@ right runs your code for real and grades your exercise answers with plain-Englis
 2. Double-click `app/install_shortcut.vbs` once to create a **Code Learning Hub** shortcut on
    your Desktop.
 
-## Start it
-
-Double-click **Code Learning Hub** on your Desktop. It starts the local server and opens the
-hub in a real standalone desktop window — no Chrome, no browser tabs, no address bar. Or run it
-manually:
+Double-click that shortcut to start it, or run it manually:
 
 ```
 python app/server.py --window   # opens as a native app window
@@ -92,4 +100,17 @@ Either of these works:
   else who runs this app (including other machines) ever sees your data or you theirs.
   Lessons are read from disk on every load, so edits to the course folders show up immediately
 - **🔄 In-app live updates** — a green "Update available" button appears in the top bar whenever
-  a newer version is published; one click updates and restarts the app automatically
+  a newer version is published; one click updates and restarts the app automatically (this
+  requires the install to be a git checkout; the standalone .exe download will show a message
+  to grab the new version manually until a future release adds a self-updating installer)
+
+## Releasing a new version
+
+1. Bump `VERSION` in `app/server.py`, commit, and push to `main`.
+2. `gh release create vX.Y.Z --title "vX.Y.Z" --notes "..."`
+3. `./build_release.ps1 -Tag vX.Y.Z` — builds the fully standalone exe (all course content +
+   static assets embedded, zero sibling files needed) and uploads it straight to that release.
+
+Anyone downloading `CodeLearningHub.exe` from the Releases page always gets this one-click,
+no-zip experience — the build script is the single source of truth for how it's produced, so
+every future release follows the same process automatically.
