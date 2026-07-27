@@ -12,16 +12,24 @@ it. That's it — everything (all five courses, the app itself) is bundled insid
 No Python install, no zip file, nothing to configure.
 
 The first time it runs, it unpacks a real **`CodeLearningHub`** folder (all five course folders,
-plus the app itself) next to wherever you put the .exe — same as a real install, not just a
-window that vanishes when you close it. If that location isn't writable (e.g. running straight
-out of a read-only folder), it falls back to `%LOCALAPPDATA%\CodeLearningHub` instead. You can
-open, edit, and browse those files directly in File Explorer or any editor, exactly like the git
-checkout contributors use.
+plus the app itself) into `%LOCALAPPDATA%\CodeLearningHub` — same as a real install, not just a
+window that vanishes when you close it. You can open, edit, and browse those files directly in
+File Explorer or any editor, exactly like the git checkout contributors use.
 
 The only thing not bundled is the ability to actually *run/check* Python and JavaScript/TypeScript
 exercises — that needs a real Python (and, for the JS/TS track, Node.js) installed on your
 machine, since the app runs your code for real rather than faking it. Reading lessons, browsing
 courses, flashcards, and quizzes all work with zero extra installs.
+
+### "Windows protected your PC" / antivirus warnings
+
+`CodeLearningHub.exe` isn't code-signed (that requires a paid certificate), so Windows
+SmartScreen and some antivirus engines may flag a fresh download as unrecognized or even as a
+false-positive threat — this is common for small, unsigned PyInstaller apps and not unique to
+this one. If SmartScreen blocks it: click **More info** → **Run anyway**. If your antivirus
+quarantines it outright, you can verify it's the real, unmodified build by comparing its SHA256
+hash against the one printed in that release's notes (`Get-FileHash CodeLearningHub.exe` in
+PowerShell), then restore it from quarantine / add an exclusion.
 
 ## Running from source instead (for contributors)
 

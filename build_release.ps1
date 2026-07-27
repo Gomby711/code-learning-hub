@@ -43,9 +43,48 @@ if ($LASTEXITCODE -ne 0) { throw "git archive failed (exit $LASTEXITCODE)" }
 Expand-Archive -Path (Join-Path $Stage "src.zip") -DestinationPath (Join-Path $Stage "src") -Force
 $S = Join-Path $Stage "src"
 
+# Version resource + --noupx: unsigned onefile PyInstaller exes with no
+# embedded metadata and UPX-compressed sections are a classic Windows
+# Defender heuristic false-positive (looks like a packed dropper). Neither
+# fully eliminates AV flags without a real code-signing cert, but both
+# meaningfully cut false-positive rates.
+$VersionMatch = Select-String -Path "$S\app\server.py" -Pattern '^VERSION\s*=\s*"([\d.]+)"'
+$AppVersion = if ($VersionMatch) { $VersionMatch.Matches[0].Groups[1].Value } else { "0.0.0" }
+$VerParts = (($AppVersion -split '\.') + @('0','0','0','0'))[0..3] -join ', '
+$VersionInfoPath = Join-Path $Stage "version_info.txt"
+@"
+VSVersionInfo(
+  ffi=FixedFileInfo(
+    filevers=($VerParts),
+    prodvers=($VerParts),
+    mask=0x3f,
+    flags=0x0,
+    OS=0x40004,
+    fileType=0x1,
+    subtype=0x0,
+    date=(0, 0)
+  ),
+  kids=[
+    StringFileInfo(
+      [StringTable(
+        u'040904B0',
+        [StringStruct(u'CompanyName', u'Code Learning Hub'),
+         StringStruct(u'FileDescription', u'Code Learning Hub - offline coding course app'),
+         StringStruct(u'FileVersion', u'$AppVersion'),
+         StringStruct(u'InternalName', u'CodeLearningHub'),
+         StringStruct(u'LegalCopyright', u'Code Learning Hub'),
+         StringStruct(u'OriginalFilename', u'CodeLearningHub.exe'),
+         StringStruct(u'ProductName', u'Code Learning Hub'),
+         StringStruct(u'ProductVersion', u'$AppVersion')])]),
+    VarFileInfo([VarStruct(u'Translation', [1033, 1200])])
+  ]
+)
+"@ | Set-Content -Path $VersionInfoPath -Encoding utf8
+
 Write-Host "Building standalone CodeLearningHub.exe with PyInstaller..."
-python -m PyInstaller --onefile --noconsole --name CodeLearningHub `
+python -m PyInstaller --onefile --noconsole --noupx --name CodeLearningHub `
   --icon "$S\app\icon.ico" `
+  --version-file "$VersionInfoPath" `
   --add-data "$S\app\static;app/static" `
   --add-data "$S\app\run_ts.js;app" `
   --add-data "$S\app\icon.ico;app" `
@@ -63,6 +102,7 @@ if (-not (Test-Path $exe)) {
     throw "Build did not produce $exe"
 }
 Write-Host ("Built {0} ({1:N1} MB)" -f $exe, ((Get-Item $exe).Length / 1MB))
+Write-Host ("SHA256: {0}" -f (Get-FileHash $exe -Algorithm SHA256).Hash)
 
 if ($Tag) {
     Write-Host "Uploading to GitHub Release $Tag ..."
