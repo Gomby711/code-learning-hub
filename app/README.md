@@ -9,7 +9,14 @@ right runs your code for real and grades your exercise answers with plain-Englis
 Download **`CodeLearningHub.exe`** from the
 [latest release](https://github.com/Gomby711/code-learning-hub/releases/latest) and double-click
 it. That's it — everything (all five courses, the app itself) is bundled inside that one file.
-No Python install, no zip file, no folder to dig through.
+No Python install, no zip file, nothing to configure.
+
+The first time it runs, it unpacks a real **`CodeLearningHub`** folder (all five course folders,
+plus the app itself) next to wherever you put the .exe — same as a real install, not just a
+window that vanishes when you close it. If that location isn't writable (e.g. running straight
+out of a read-only folder), it falls back to `%LOCALAPPDATA%\CodeLearningHub` instead. You can
+open, edit, and browse those files directly in File Explorer or any editor, exactly like the git
+checkout contributors use.
 
 The only thing not bundled is the ability to actually *run/check* Python and JavaScript/TypeScript
 exercises — that needs a real Python (and, for the JS/TS track, Node.js) installed on your

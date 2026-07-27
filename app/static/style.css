@@ -134,6 +134,7 @@ body {
   background: rgba(5,7,20,.65); backdrop-filter: blur(2px);
   display: flex; align-items: center; justify-content: center;
 }
+.modal-overlay[hidden] { display: none; }
 .modal-box {
   background: var(--navy); border: 1px solid var(--border-lite);
   border-radius: 12px; padding: 22px 24px; max-width: 380px; width: 90%;

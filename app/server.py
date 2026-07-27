@@ -21,22 +21,57 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
+VERSION = "1.1.0"
+GITHUB_REPO = "Gomby711/code-learning-hub"
+
+COURSE_FOLDERS = ("python", "typescript-javascript", "html-css", "qt", "career")
+
+
+def _writable(dir_path: Path) -> bool:
+    try:
+        probe = dir_path / ".hub_write_test"
+        probe.write_text("x", encoding="utf-8")
+        probe.unlink()
+        return True
+    except OSError:
+        return False
+
+
+def _ensure_persistent_root(bundle: Path) -> Path:
+    """PyInstaller onefile builds unpack their embedded --add-data files into a
+    throwaway temp directory (sys._MEIPASS) that's wiped again once the app
+    closes, so the user never actually gets real course folders on disk to
+    browse or edit outside the app. Copy them out, once, to a real permanent
+    folder next to the exe (or %LOCALAPPDATA% if that location isn't
+    writable) so downloading the .exe gives the user the whole app — same as
+    a normal git checkout — not just a black-box window.
+    """
+    exe_dir = Path(sys.executable).resolve().parent
+    base = exe_dir if _writable(exe_dir) else Path(
+        os.environ.get("LOCALAPPDATA", str(Path.home())))
+    target = base / "CodeLearningHub"
+    target.mkdir(parents=True, exist_ok=True)
+
+    marker = target / ".hub_version"
+    if not marker.exists() or marker.read_text(encoding="utf-8").strip() != VERSION:
+        for folder in COURSE_FOLDERS:
+            src, dst = bundle / folder, target / folder
+            if src.is_dir():
+                shutil.copytree(src, dst, dirs_exist_ok=True)
+        marker.write_text(VERSION, encoding="utf-8")
+    return target
+
+
 FROZEN = getattr(sys, "frozen", False)
 if FROZEN:
-    # PyInstaller onefile builds unpack their embedded --add-data files into a
-    # real temp directory (sys._MEIPASS) at every launch. The build mirrors
-    # this repo's own layout inside that bundle (course folders + app/), so
-    # everything below resolves exactly like the unfrozen, on-disk case.
-    ROOT = Path(sys._MEIPASS)          # type: ignore[attr-defined]
-    APP_DIR = ROOT / "app"
+    BUNDLE = Path(sys._MEIPASS)        # type: ignore[attr-defined]
+    APP_DIR = BUNDLE / "app"
+    ROOT = _ensure_persistent_root(BUNDLE)
 else:
     APP_DIR = Path(__file__).resolve().parent
     ROOT = APP_DIR.parent               # D:\Git\learning-code
 STATIC = APP_DIR / "static"
 PORT = 8899
-
-VERSION = "1.0.0"
-GITHUB_REPO = "Gomby711/code-learning-hub"
 
 
 def _version_tuple(v: str):
