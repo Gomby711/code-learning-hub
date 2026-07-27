@@ -21,20 +21,10 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 GITHUB_REPO = "Gomby711/code-learning-hub"
 
 COURSE_FOLDERS = ("python", "typescript-javascript", "html-css", "qt", "career")
-
-
-def _writable(dir_path: Path) -> bool:
-    try:
-        probe = dir_path / ".hub_write_test"
-        probe.write_text("x", encoding="utf-8")
-        probe.unlink()
-        return True
-    except OSError:
-        return False
 
 
 def _ensure_persistent_root(bundle: Path) -> Path:
@@ -42,14 +32,17 @@ def _ensure_persistent_root(bundle: Path) -> Path:
     throwaway temp directory (sys._MEIPASS) that's wiped again once the app
     closes, so the user never actually gets real course folders on disk to
     browse or edit outside the app. Copy them out, once, to a real permanent
-    folder next to the exe (or %LOCALAPPDATA% if that location isn't
-    writable) so downloading the .exe gives the user the whole app — same as
-    a normal git checkout — not just a black-box window.
+    folder so downloading the .exe gives the user the whole app — same as a
+    normal git checkout — not just a black-box window.
+
+    This always targets the standard per-user app-data folder
+    (%LOCALAPPDATA%\\CodeLearningHub), never "wherever the exe happens to
+    sit" (often Downloads) — silently writing a pile of files into an
+    arbitrary folder next to an unknown .exe is exactly the behavior
+    heuristic antivirus engines flag as dropper/trojan-like, which is what
+    caused v1.1.0 to trip Windows Defender.
     """
-    exe_dir = Path(sys.executable).resolve().parent
-    base = exe_dir if _writable(exe_dir) else Path(
-        os.environ.get("LOCALAPPDATA", str(Path.home())))
-    target = base / "CodeLearningHub"
+    target = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "CodeLearningHub"
     target.mkdir(parents=True, exist_ok=True)
 
     marker = target / ".hub_version"
